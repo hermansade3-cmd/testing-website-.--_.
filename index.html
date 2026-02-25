@@ -1,148 +1,187 @@
-<!DOCTYPE html>
-<html lang="sw">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MASOMO YA ZIMAMOTO PRO</title>
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const http = require("http");
+const socketIo = require("socket.io");
+const multer = require("multer");
+const path = require("path");
 
-<style>
-body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:#0f172a;
-    color:white;
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
+
+app.use(cors());
+app.use(express.json());
+
+mongoose.connect("mongodb://127.0.0.1:27017/sadeMega");
+
+const User = mongoose.model("User", new mongoose.Schema({
+ username:String,
+ password:String,
+ role:{type:String,default:"user"}
+}));
+
+const Message = mongoose.model("Message", new mongoose.Schema({
+ user:String,
+ text:String,
+ time:{type:Date,default:Date.now}
+}));
+
+const SECRET="SADE_MEGA_SECRET";
+
+/* REGISTER */
+app.post("/register", async(req,res)=>{
+ const hashed = await bcrypt.hash(req.body.password,10);
+ await new User({username:req.body.username,password:hashed}).save();
+ res.json({msg:"Registered ✅"});
+});
+
+/* LOGIN */
+app.post("/login", async(req,res)=>{
+ const user = await User.findOne({username:req.body.username});
+ if(!user) return res.status(400).json({error:"User not found"});
+ const valid = await bcrypt.compare(req.body.password,user.password);
+ if(!valid) return res.status(400).json({error:"Wrong password"});
+ const token = jwt.sign({id:user._id,role:user.role},SECRET);
+ res.json({token});
+});
+
+/* ADMIN */
+function verifyAdmin(req,res,next){
+ try{
+  const decoded = jwt.verify(req.headers.authorization,SECRET);
+  if(decoded.role!=="admin") return res.status(403).json({error:"Denied"});
+  next();
+ }catch{
+  res.status(401).json({error:"Invalid Token"});
+ }
 }
 
-header{
-    background:#b91c1c;
-    padding:15px;
-    text-align:center;
-    font-size:22px;
-    font-weight:bold;
-}
+app.get("/admin",verifyAdmin,(req,res)=>{
+ res.json({power:"🔥 SADE ADMIN POWER 🔥"});
+});
 
-.search-box{
-    padding:20px;
-    text-align:center;
-}
+/* FILE UPLOAD */
+const storage = multer.diskStorage({
+ destination:"./",
+ filename:(req,file,cb)=>cb(null,Date.now()+"-"+file.originalname)
+});
+const upload = multer({storage});
 
-input{
-    width:90%;
-    max-width:400px;
-    padding:12px;
-    border-radius:8px;
-    border:none;
-    font-size:16px;
-}
+app.post("/upload",upload.single("file"),(req,res)=>{
+ res.json({msg:"File Uploaded 📂"});
+});
 
-button{
-    padding:12px 20px;
-    background:#dc2626;
-    border:none;
-    color:white;
-    border-radius:8px;
-    margin-top:10px;
-    cursor:pointer;
-}
+/* REALTIME CHAT */
+io.on("connection",(socket)=>{
+ socket.on("sendMessage", async(data)=>{
+   const msg = new Message(data);
+   await msg.save();
+   io.emit("receiveMessage",msg);
+ });
+});
 
-.result{
-    padding:20px;
-    max-width:800px;
-    margin:auto;
-}
+/* FRONTEND SERVED FROM SAME FILE */
+app.get("/",(req,res)=>{
+ res.send(`
+ <!DOCTYPE html>
+ <html>
+ <head>
+ <title>🔥 SADE ULTRA MEGA 💎</title>
+ <script src="/socket.io/socket.io.js"></script>
+ <style>
+ body{background:#0f172a;color:white;font-family:Arial;padding:20px}
+ input,button{padding:10px;margin:5px}
+ .chat{height:250px;overflow:auto;border:1px solid #444;padding:10px}
+ button{background:#38bdf8;color:black;font-weight:bold}
+ video{width:250px;margin-top:10px}
+ </style>
+ </head>
+ <body>
 
-canvas{
-    background:white;
-    margin-top:20px;
-    border-radius:10px;
-}
-</style>
-</head>
+ <h1>🔥 SADE ULTRA MEGA SYSTEM 💎🚀</h1>
 
-<body>
+ <h2>🔐 Register</h2>
+ <input id="regUser" placeholder="Username">
+ <input id="regPass" type="password" placeholder="Password">
+ <button onclick="register()">Register</button>
 
-<header>
-🔥 MASOMO YA ZIMAMOTO PRO 🔥
-</header>
+ <h2>🔑 Login</h2>
+ <input id="logUser" placeholder="Username">
+ <input id="logPass" type="password" placeholder="Password">
+ <button onclick="login()">Login</button>
 
-<div class="search-box">
-<input type="text" id="search" placeholder="Andika swali la zimamoto... mfano: Fire Triangle">
-<br>
-<button onclick="tafuta()">TAFUTA</button>
-</div>
+ <h2>💬 Chat</h2>
+ <div class="chat" id="chatBox"></div>
+ <input id="msg" placeholder="Message">
+ <button onclick="send()">Send 🚀</button>
 
-<div class="result" id="result"></div>
+ <h2>📂 Upload</h2>
+ <input type="file" id="file">
+ <button onclick="upload()">Upload</button>
 
-<script>
+ <h2>📹 Camera</h2>
+ <video id="localVideo" autoplay muted></video>
 
-function tafuta(){
-    let swali = document.getElementById("search").value.toLowerCase();
-    let result = document.getElementById("result");
-    result.innerHTML = "";
+ <script>
+ const socket = io();
 
-    if(swali.includes("fire triangle")){
-        result.innerHTML = `
-        <h2>Fire Triangle</h2>
-        <p>Fire Triangle ina vitu vitatu muhimu ili moto uwake:</p>
-        <ul>
-        <li>Joto (Heat)</li>
-        <li>Oksijeni (Oxygen)</li>
-        <li>Mafuta (Fuel)</li>
-        </ul>
-        <canvas id="mchoro" width="300" height="300"></canvas>
-        `;
-        choraTriangle();
-    }
+ socket.on("receiveMessage",(data)=>{
+   document.getElementById("chatBox").innerHTML +=
+   "<p>👤 "+data.user+": "+data.text+"</p>";
+ });
 
-    else if(swali.includes("daraja")){
-        result.innerHTML = `
-        <h2>Daraja za Moto</h2>
-        <p><b>Daraja A:</b> Vitu vigumu kama mbao</p>
-        <p><b>Daraja B:</b> Vimiminika kama petroli</p>
-        <p><b>Daraja C:</b> Gesi</p>
-        <p><b>Daraja D:</b> Metali</p>
-        `;
-    }
+ function send(){
+   socket.emit("sendMessage",{user:"User",text:msg.value});
+   msg.value="";
+ }
 
-    else if(swali.includes("extinguisher")){
-        result.innerHTML = `
-        <h2>Aina za Fire Extinguisher</h2>
-        <ul>
-        <li>Water</li>
-        <li>Foam</li>
-        <li>CO2</li>
-        <li>Dry Powder</li>
-        </ul>
-        `;
-    }
+ async function register(){
+   await fetch("/register",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+     username:regUser.value,
+     password:regPass.value
+    })
+   });
+   alert("Registered ✅");
+ }
 
-    else{
-        result.innerHTML = "<h3>Hakuna jibu lililopatikana. Jaribu swali lingine la zimamoto.</h3>";
-    }
-}
+ async function login(){
+   const res = await fetch("/login",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+     username:logUser.value,
+     password:logPass.value
+    })
+   });
+   const data = await res.json();
+   localStorage.setItem("token",data.token);
+   alert("Logged In 🔑");
+ }
 
-function choraTriangle(){
-    const canvas = document.getElementById("mchoro");
-    const ctx = canvas.getContext("2d");
+ async function upload(){
+   const formData = new FormData();
+   formData.append("file",file.files[0]);
+   await fetch("/upload",{method:"POST",body:formData});
+   alert("Uploaded 📂");
+ }
 
-    ctx.beginPath();
-    ctx.moveTo(150,50);
-    ctx.lineTo(50,250);
-    ctx.lineTo(250,250);
-    ctx.closePath();
+ navigator.mediaDevices.getUserMedia({video:true,audio:true})
+ .then(stream=>{
+   document.getElementById("localVideo").srcObject=stream;
+ });
+ </script>
 
-    ctx.strokeStyle = "red";
-    ctx.lineWidth = 3;
-    ctx.stroke();
+ </body>
+ </html>
+ `);
+});
 
-    ctx.font = "16px Arial";
-    ctx.fillStyle = "black";
-    ctx.fillText("HEAT",130,40);
-    ctx.fillText("OXYGEN",20,270);
-    ctx.fillText("FUEL",200,270);
-}
-
-</script>
-
-</body>
-</html>
+server.listen(5000,()=>{
+ console.log("🚀 SADE ULTRA MEGA RUNNING 👉 http://localhost:5000");
+});

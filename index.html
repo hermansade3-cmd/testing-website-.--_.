@@ -1,3 +1,37 @@
+  <View style={{ flex: 1, padding: 20 }}>
+      <Text style={{ fontSize: 24, fontWeight: "bold" }}>MAMA SALAMA PRO</Text>
+
+      <TextInput
+        placeholder="Tafuta somo..."
+        value={search}
+        onChangeText={setSearch}
+        style={{ borderWidth: 1, padding: 10, marginVertical: 10 }}
+      />
+
+      {selectedLesson ? (
+        <ScrollView>
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+            {selectedLesson.title}
+          </Text>
+          <Text>{selectedLesson.content}</Text>
+          <TouchableOpacity onPress={() => setSelectedLesson(null)}>
+            <Text style={{ color: "blue", marginTop: 20 }}>Rudi</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      ) : (
+        <FlatList
+          data={filteredLessons}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => setSelectedLesson(item)}>
+              <Text style={{ padding: 10 }}>{item.title}</Text>
+            </TouchableOpacity>
+          )}
+        />
+      )}
+    </View>
+  );
+}
 <!DOCTYPE html>
 <html lang="sw">
 <head>
@@ -324,7 +358,175 @@ searchInput.addEventListener("keyup", function(){
 
         const randomIndex = Math.floor(Math.random() * quotes.length);
         document.getElementById("quote").innerText = quotes[randomIndex];
-    }
+    }<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAMA SALAMA PRO</title>
+<style>
+body{
+font-family: Arial, sans-serif;
+margin:0;
+background:#fff0f5;
+}
+header{
+background:#d81b60;
+color:white;
+padding:15px;
+text-align:center;
+font-size:22px;
+font-weight:bold;
+}
+.container{padding:15px;}
+input, button{
+padding:10px;
+margin:5px 0;
+width:100%;
+}
+.lesson{
+background:white;
+padding:10px;
+margin:5px 0;
+border-radius:8px;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
+cursor:pointer;
+}
+.hidden{display:none;}
+.quiz-option{
+background:#f8bbd0;
+padding:8px;
+margin:5px 0;
+border-radius:5px;
+cursor:pointer;
+}
+.ai-box{
+background:#fff;
+padding:10px;
+border-radius:8px;
+margin-top:10px;
+}
+footer{
+text-align:center;
+padding:10px;
+background:#f06292;
+color:white;
+}
+</style>
+</head>
+<body>
+
+<header>MAMA SALAMA PRO – Elimu kwa Wajawazito</header>
+
+<div class="container">
+
+<input type="text" id="search" placeholder="Tafuta somo...">
+
+<div id="lessonList"></div>
+
+<div id="lessonContent" class="hidden"></div>
+
+<hr>
+
+<h3>QUIZ YA AFYA</h3>
+<div id="quizBox"></div>
+
+<hr>
+
+<h3>MUULIZE MTAALAMU (AI)</h3>
+<input type="text" id="aiQuestion" placeholder="Andika swali lako...">
+<button onclick="askAI()">Tuma Swali</button>
+<div id="aiAnswer" class="ai-box"></div>
+
+</div>
+
+<footer>© 2026 Mama Salama Pro</footer>
+
+<script>
+
+// ===== GENERATE 100,000+ WORD CONTENT =====
+const lessons = [];
+function generateLongContent(week){
+let text = "";
+for(let i=0;i<2500;i++){
+text += `Wiki ya ${week}: Ujauzito ni kipindi muhimu sana. Lishe bora, mapumziko, na kufuatilia kliniki ni muhimu. `;
+}
+return text;
+}
+for(let i=1;i<=40;i++){
+lessons.push({
+title:`Wiki ya ${i} ya Ujauzito`,
+content:generateLongContent(i)
+});
+}
+
+// ===== DISPLAY LESSONS =====
+const lessonList = document.getElementById("lessonList");
+const lessonContent = document.getElementById("lessonContent");
+
+function renderLessons(filter=""){
+lessonList.innerHTML="";
+lessons
+.filter(l=>l.title.toLowerCase().includes(filter.toLowerCase()))
+.forEach((lesson,index)=>{
+let div=document.createElement("div");
+div.className="lesson";
+div.innerText=lesson.title;
+div.onclick=()=>{
+lessonContent.classList.remove("hidden");
+lessonContent.innerHTML=`<h2>${lesson.title}</h2><p>${lesson.content}</p>
+<button onclick="lessonContent.classList.add('hidden')">Rudi</button>`;
+};
+lessonList.appendChild(div);
+});
+}
+
+renderLessons();
+
+document.getElementById("search").addEventListener("input",(e)=>{
+renderLessons(e.target.value);
+});
+
+// ===== QUIZ SYSTEM =====
+const quizData={
+question:"Dalili ya kawaida ya ujauzito ni ipi?",
+options:["Kichefuchefu","Maumivu ya sikio","Kukohoa"],
+answer:"Kichefuchefu"
+};
+
+const quizBox=document.getElementById("quizBox");
+quizBox.innerHTML=`<p>${quizData.question}</p>`;
+quizData.options.forEach(opt=>{
+let div=document.createElement("div");
+div.className="quiz-option";
+div.innerText=opt;
+div.onclick=()=>{
+if(opt===quizData.answer){
+alert("Hongera! Jibu sahihi.");
+}else{
+alert("Jaribu tena.");
+}
+};
+quizBox.appendChild(div);
+});
+
+// ===== SIMPLE AI PLACEHOLDER =====
+function askAI(){
+let question=document.getElementById("aiQuestion").value;
+let answer="Asante kwa swali lako. Tafadhali hakikisha unahudhuria kliniki mara kwa mara na kula lishe bora.";
+if(question.toLowerCase().includes("maumivu")){
+answer="Maumivu makali wakati wa ujauzito yanahitaji uone daktari mara moja.";
+}
+document.getElementById("aiAnswer").innerText=answer;
+}
+
+// ===== OFFLINE SAVE =====
+localStorage.setItem("mamaSalamaData",JSON.stringify(lessons));
+
+</script>
+
+</body>
+</html>
 </script>
 
 </body>

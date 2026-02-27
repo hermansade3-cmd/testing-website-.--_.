@@ -165,3 +165,167 @@ searchInput.addEventListener("keyup", function(){
 
 </body>
     </html>
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upendo Wetu 💖</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            color: white;
+        }
+
+        header {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background: rgba(0,0,0,0.2);
+            padding: 10px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: yellow;
+        }
+
+        section {
+            padding: 40px;
+            text-align: center;
+            display: none;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: white;
+            color: #ff4b7d;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: yellow;
+            color: black;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            margin-top: 20px;
+        }
+
+        .quote-box {
+            font-size: 20px;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        input, textarea {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    💖 KARIBU KWENYE UPENDO WETU 💖
+</header>
+
+<nav>
+    <a href="#" onclick="showSection('home')">Home</a>
+    <a href="#" onclick="showSection('about')">Kuhusu</a>
+    <a href="#" onclick="showSection('advice')">Ushauri</a>
+    <a href="#" onclick="showSection('quotes')">Nukuu</a>
+    <a href="#" onclick="showSection('contact')">Mawasiliano</a>
+</nav>
+
+<section id="home" class="active">
+    <h2>Karibu Mpenzi 💕</h2>
+    <p>Hii ni website maalum kwa ajili ya mapenzi, furaha na mahusiano yenye afya.</p>
+    <button onclick="alert('Nakupenda Sana 💖')">Bonyeza Hapa</button>
+</section>
+
+<section id="about">
+    <h2>Kuhusu Sisi 💑</h2>
+    <p>Upendo Wetu ni jukwaa la kusaidia watu kujenga mahusiano imara, ya heshima na yenye furaha.</p>
+</section>
+
+<section id="advice">
+    <h2>Ushauri wa Mahusiano ❤️</h2>
+    <p>1. Mawasiliano mazuri ni msingi wa upendo.</p>
+    <p>2. Heshima ni nguzo ya mahusiano imara.</p>
+    <p>3. Kusamehe ni ishara ya upendo wa kweli.</p>
+</section>
+
+<section id="quotes">
+    <h2>Nukuu za Mapenzi 💌</h2>
+    <div class="quote-box" id="quote">"Upendo wa kweli hauishi, huongezeka kila siku."</div>
+    <button onclick="newQuote()">Nukuu Nyingine</button>
+</section>
+
+<section id="contact">
+    <h2>Wasiliana Nasi 📩</h2>
+    <input type="text" placeholder="Jina lako">
+    <input type="email" placeholder="Barua pepe">
+    <textarea rows="4" placeholder="Ujumbe wako"></textarea>
+    <br>
+    <button onclick="alert('Ujumbe umetumwa 💖')">Tuma</button>
+</section>
+
+<footer>
+    © 2026 Upendo Wetu | Imetengenezwa kwa 💖
+</footer>
+
+<script>
+    function showSection(sectionId) {
+        let sections = document.querySelectorAll("section");
+        sections.forEach(section => {
+            section.classList.remove("active");
+        });
+        document.getElementById(sectionId).classList.add("active");
+    }
+
+    function newQuote() {
+        const quotes = [
+            "Nakupenda kuliko jana, lakini chini ya kesho 💖",
+            "Wewe ni furaha ya moyo wangu 💕",
+            "Mapenzi ni zawadi ya thamani 💝",
+            "Bila wewe maisha hayana ladha ❤️"
+        ];
+
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        document.getElementById("quote").innerText = quotes[randomIndex];
+    }
+</script>
+
+</body>
+</html>

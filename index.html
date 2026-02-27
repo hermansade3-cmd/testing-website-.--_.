@@ -1,533 +1,209 @@
-  <View style={{ flex: 1, padding: 20 }}>
-      <Text style={{ fontSize: 24, fontWeight: "bold" }}>MAMA SALAMA PRO</Text>
-
-      <TextInput
-        placeholder="Tafuta somo..."
-        value={search}
-        onChangeText={setSearch}
-        style={{ borderWidth: 1, padding: 10, marginVertical: 10 }}
-      />
-
-      {selectedLesson ? (
-        <ScrollView>
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-            {selectedLesson.title}
-          </Text>
-          <Text>{selectedLesson.content}</Text>
-          <TouchableOpacity onPress={() => setSelectedLesson(null)}>
-            <Text style={{ color: "blue", marginTop: 20 }}>Rudi</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      ) : (
-        <FlatList
-          data={filteredLessons}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => setSelectedLesson(item)}>
-              <Text style={{ padding: 10 }}>{item.title}</Text>
-            </TouchableOpacity>
-          )}
-        />
-      )}
-    </View>
-  );
-}
 <!DOCTYPE html>
 <html lang="sw">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KAMUSI YA KIZIMAMOTO PRO</title>
-
+<title>SadeGPTFire v3.0 — AI ya Zimamoto, Uokoaji & Maafa</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
+:root {
+  --f1:#FF4500; --f2:#FF6D00; --f3:#FFAB40; --f4:#FFD180;
+  --ember:#FF1744; --gold:#FFC400;
+  --bg:#070709; --bg2:#0D0D12; --bg3:#12121A; --panel:#0F0F18;
+  --card:#161622; --card2:#1C1C2E;
+  --border:#252535; --border2:#303048;
+  --text:#EEF0FF; --text2:#A0A8C8; --muted:#5A5F7A;
+  --green:#00E676; --teal:#00BCD4; --blue:#448AFF;
+  --red:#FF1744; --yellow:#FFD740;
+  --glow: 0 0 30px rgba(255,69,0,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
 body{
-    margin:0;
-    font-family: Arial, Helvetica, sans-serif;
-    background:#0f172a;
-    color:white;
+  background:var(--bg);color:var(--text);
+  font-family:'Exo 2',sans-serif;
+  display:flex;flex-direction:column;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255,69,0,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 90% 80%, rgba(255,109,0,0.05) 0%, transparent 50%);
 }
-
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.spark{position:absolute;bottom:-10px;width:2px;border-radius:50%;background:var(--f1);animation:rise linear infinite;opacity:0;}
+@keyframes rise{0%{transform:translateY(0) translateX(0);opacity:0;}10%{opacity:1;}90%{opacity:0.4;}100%{transform:translateY(-100vh) translateX(var(--drift));opacity:0;}}
 header{
-    background:linear-gradient(90deg,#b91c1c,#7f1d1d);
-    padding:20px;
-    text-align:center;
-    font-size:28px;
-    font-weight:bold;
-    letter-spacing:2px;
+  position:relative;z-index:100;flex-shrink:0;
+  background:linear-gradient(180deg,#0D0D18 0%,#0A0A14 100%);
+  border-bottom:1px solid rgba(255,69,0,0.3);
+  box-shadow:0 4px 40px rgba(255,69,0,0.2);
+  display:flex;align-items:center;
+  padding:0;height:70px;
 }
-
-.search-box{
-    text-align:center;
-    margin:20px;
-}
-
-input{
-    width:80%;
-    padding:12px;
-    font-size:16px;
-    border-radius:8px;
-    border:none;
-}
-
-.container{
-    padding:20px;
-    display:grid;
-    grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
-    gap:20px;
-}
-
-.card{
-    background:#1e293b;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 0 10px rgba(0,0,0,0.6);
-    transition:0.3s;
-}
-
-.card:hover{
-    transform:scale(1.03);
-    background:#334155;
-}
-
-h2{
-    color:#f87171;
-}
-
-footer{
-    text-align:center;
-    padding:20px;
-    background:#111827;
-    margin-top:30px;
-}
-</style>
-</head>
-
-<body>
-
-<header>
-🔥 KAMUSI KUBWA YA MANENO YA KITAALAMU YA ZIMAMOTO 🔥
-</header>
-
-<div class="search-box">
-<input type="text" id="searchInput" placeholder="Andika neno la kizimamoto kutafuta...">
-</div>
-
-<div class="container" id="wordContainer">
-
-<div class="card">
-<h2>Fire Tetrahedron</h2>
-<p>Nadharia inayoelezea kuwa moto unahitaji vitu vinne: Joto (Heat), Mafuta (Fuel), Oksijeni (Oxygen) na Mmenyuko wa Kikemikali (Chemical Chain Reaction). Kuondoa kipengele kimoja huzima moto.</p>
-</div>
-
-<div class="card">
-<h2>Flashover</h2>
-<p>Hatua ya ghafla ambapo gesi zote zinazowaka ndani ya chumba zinawaka kwa wakati mmoja kutokana na joto kali kufikia kiwango cha kuwaka.</p>
-</div>
-
-<div class="card">
-<h2>Backdraft</h2>
-<p>Mlipuko unaotokea pale oksijeni inapoingia ghafla katika eneo lenye moto uliokuwa umefungiwa bila hewa ya kutosha.</p>
-</div>
-
-<div class="card">
-<h2>SCBA (Self Contained Breathing Apparatus)</h2>
-<p>Kifaa cha kupumulia hewa safi kinachovaliwa na askari wa zimamoto wakati wa operesheni katika mazingira yenye moshi au gesi hatari.</p>
-</div>
-
-<div class="card">
-<h2>Fire Load</h2>
-<p>Kiasi cha vitu vinavyoweza kuwaka ndani ya eneo fulani ambacho kinaweza kuongeza ukubwa wa moto.</p>
-</div>
-
-<div class="card">
-<h2>Compartment Fire</h2>
-<p>Moto unaotokea ndani ya chumba kilichofungwa au jengo lenye mipaka maalumu ya kuta.</p>
-</div>
-
-<div class="card">
-<h2>Ventilation</h2>
-<p>Utaratibu wa kuingiza au kutoa hewa ili kupunguza joto, moshi na gesi hatari wakati wa uokoaji.</p>
-</div>
-
-<div class="card">
-<h2>Hydrant</h2>
-<p>Kifaa cha kudumu kinachounganishwa na mfumo wa maji kwa ajili ya kujaza maji kwenye gari la zimamoto.</p>
-</div>
-
-<div class="card">
-<h2>Fire Suppression System</h2>
-<p>Mfumo wa kiotomatiki wa kuzima moto kama sprinkler system au mfumo wa gesi ya CO₂.</p>
-</div>
-
-<div class="card">
-<h2>Incident Command System (ICS)</h2>
-<p>Mfumo wa uongozi unaotumika kusimamia matukio ya dharura kwa mpangilio wa kitaalamu na mgawanyo wa majukumu.</p>
-</div>
-
-<div class="card">
-<h2>Thermal Layering</h2>
-<p>Mgawanyiko wa joto ndani ya chumba ambapo hewa ya moto hukusanyika juu na baridi chini.</p>
-</div>
-
-<div class="card">
-<h2>Fire Behavior</h2>
-<p>Tabia ya moto kuenea, kubadilika na kuathiri mazingira kulingana na hewa, joto na aina ya mafuta yanayowaka.</p>
-</div>
-
-</div>
-
-<footer>
-© 2026 KAMUSI YA ZIMAMOTO PRO | Mfumo wa Mafunzo na Marejeo ya Kitaalamu
-</footer>
-
-<script>
-const searchInput = document.getElementById("searchInput");
-const cards = document.querySelectorAll(".card");
-
-searchInput.addEventListener("keyup", function(){
-    let filter = searchInput.value.toLowerCase();
-    cards.forEach(card => {
-        let text = card.innerText.toLowerCase();
-        if(text.includes(filter)){
-            card.style.display="block";
-        } else {
-            card.style.display="none";
-        }
-    });
-});
-</script>
-
-</body>
-    </html>
-<!DOCTYPE html>
-<html lang="sw">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upendo Wetu 💖</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #ff758c, #ff7eb3);
-            color: white;
-        }
-
-        header {
-            background: rgba(0,0,0,0.3);
-            padding: 15px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        nav {
-            display: flex;
-            justify-content: center;
-            background: rgba(0,0,0,0.2);
-            padding: 10px;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            color: yellow;
-        }
-
-        section {
-            padding: 40px;
-            text-align: center;
-            display: none;
-        }
-
-        section.active {
-            display: block;
-        }
-
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
-            background: white;
-            color: #ff4b7d;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: yellow;
-            color: black;
-        }
-
-        footer {
-            text-align: center;
-            padding: 15px;
-            background: rgba(0,0,0,0.3);
-            margin-top: 20px;
-        }
-
-        .quote-box {
-            font-size: 20px;
-            margin-top: 20px;
-            font-style: italic;
-        }
-
-        input, textarea {
-            width: 80%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 10px;
-            border: none;
-        }
-    </style>
-</head>
-<body>
-
-<header>
-    💖 KARIBU KWENYE UPENDO WETU 💖
-</header>
-
-<nav>
-    <a href="#" onclick="showSection('home')">Home</a>
-    <a href="#" onclick="showSection('about')">Kuhusu</a>
-    <a href="#" onclick="showSection('advice')">Ushauri</a>
-    <a href="#" onclick="showSection('quotes')">Nukuu</a>
-    <a href="#" onclick="showSection('contact')">Mawasiliano</a>
-</nav>
-
-<section id="home" class="active">
-    <h2>Karibu Mpenzi 💕</h2>
-    <p>Hii ni website maalum kwa ajili ya mapenzi, furaha na mahusiano yenye afya.</p>
-    <button onclick="alert('Nakupenda Sana 💖')">Bonyeza Hapa</button>
-</section>
-
-<section id="about">
-    <h2>Kuhusu Sisi 💑</h2>
-    <p>Upendo Wetu ni jukwaa la kusaidia watu kujenga mahusiano imara, ya heshima na yenye furaha.</p>
-</section>
-
-<section id="advice">
-    <h2>Ushauri wa Mahusiano ❤️</h2>
-    <p>1. Mawasiliano mazuri ni msingi wa upendo.</p>
-    <p>2. Heshima ni nguzo ya mahusiano imara.</p>
-    <p>3. Kusamehe ni ishara ya upendo wa kweli.</p>
-</section>
-
-<section id="quotes">
-    <h2>Nukuu za Mapenzi 💌</h2>
-    <div class="quote-box" id="quote">"Upendo wa kweli hauishi, huongezeka kila siku."</div>
-    <button onclick="newQuote()">Nukuu Nyingine</button>
-</section>
-
-<section id="contact">
-    <h2>Wasiliana Nasi 📩</h2>
-    <input type="text" placeholder="Jina lako">
-    <input type="email" placeholder="Barua pepe">
-    <textarea rows="4" placeholder="Ujumbe wako"></textarea>
-    <br>
-    <button onclick="alert('Ujumbe umetumwa 💖')">Tuma</button>
-</section>
-
-<footer>
-    © 2026 Upendo Wetu | Imetengenezwa kwa 💖
-</footer>
-
-<script>
-    function showSection(sectionId) {
-        let sections = document.querySelectorAll("section");
-        sections.forEach(section => {
-            section.classList.remove("active");
-        });
-        document.getElementById(sectionId).classList.add("active");
-    }
-
-    function newQuote() {
-        const quotes = [
-            "Nakupenda kuliko jana, lakini chini ya kesho 💖",
-            "Wewe ni furaha ya moyo wangu 💕",
-            "Mapenzi ni zawadi ya thamani 💝",
-            "Bila wewe maisha hayana ladha ❤️"
-        ];
-
-        const randomIndex = Math.floor(Math.random() * quotes.length);
-        document.getElementById("quote").innerText = quotes[randomIndex];
-    }<!DOCTYPE html>
-<html lang="sw">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MAMA SALAMA PRO</title>
-<style>
-body{
-font-family: Arial, sans-serif;
-margin:0;
-background:#fff0f5;
-}
-header{
-background:#d81b60;
-color:white;
-padding:15px;
-text-align:center;
-font-size:22px;
-font-weight:bold;
-}
-.container{padding:15px;}
-input, button{
-padding:10px;
-margin:5px 0;
-width:100%;
-}
-.lesson{
-background:white;
-padding:10px;
-margin:5px 0;
-border-radius:8px;
-box-shadow:0 2px 5px rgba(0,0,0,0.1);
-cursor:pointer;
-}
-.hidden{display:none;}
-.quiz-option{
-background:#f8bbd0;
-padding:8px;
-margin:5px 0;
-border-radius:5px;
-cursor:pointer;
-}
-.ai-box{
-background:#fff;
-padding:10px;
-border-radius:8px;
-margin-top:10px;
-}
-footer{
-text-align:center;
-padding:10px;
-background:#f06292;
-color:white;
-}
+.header-glow{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--f1),var(--f2),var(--f1),transparent);animation:scan 4s linear infinite;}
+@keyframes scan{0%{background-position:-100% 0}100%{background-position:200% 0}}
+.header-left{display:flex;align-items:center;gap:16px;padding:0 24px;border-right:1px solid var(--border);height:100%;}
+.fire-logo{width:46px;height:46px;background:linear-gradient(135deg,#FF4500,#FF1744);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 0 20px rgba(255,69,0,0.5);animation:logo-pulse 3s ease-in-out infinite;position:relative;overflow:hidden;}
+@keyframes logo-pulse{0%,100%{box-shadow:0 0 20px rgba(255,69,0,0.5);}50%{box-shadow:0 0 35px rgba(255,69,0,0.8);}}
+.brand h1{font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:900;letter-spacing:4px;background:linear-gradient(90deg,#FF6D00,#FFAB40,#FF4500,#FF6D00);background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:brand-shimmer 4s linear infinite;}
+@keyframes brand-shimmer{0%{background-position:0%}100%{background-position:300%}}
+.brand p{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
+.header-stats{display:flex;align-items:center;padding:0 20px;flex:1;}
+.hstat{display:flex;flex-direction:column;align-items:center;gap:2px;padding:0 20px;border-right:1px solid var(--border);min-width:100px;}
+.hstat:last-child{border-right:none;}
+.hstat .num{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:700;color:var(--f3);}
+.hstat .lbl{font-size:0.58rem;color:var(--muted);letter-spacing:2px;font-family:'Share Tech Mono',monospace;}
+.header-right{display:flex;align-items:center;gap:12px;padding:0 20px;height:100%;border-left:1px solid var(--border);}
+.status-pill{display:flex;align-items:center;gap:8px;background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.3);padding:6px 14px;border-radius:20px;font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--green);letter-spacing:1px;}
+.pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pdot 1.5s ease-in-out infinite;box-shadow:0 0 8px var(--green);}
+@keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.7)}}
+.emergency-btn{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(255,23,68,0.15),rgba(255,69,0,0.1));border:1px solid rgba(255,23,68,0.4);color:#FF6B6B;padding:7px 14px;border-radius:6px;font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all 0.2s;animation:emerg-pulse 2s ease-in-out infinite;}
+@keyframes emerg-pulse{0%,100%{box-shadow:0 0 8px rgba(255,23,68,0.2);}50%{box-shadow:0 0 20px rgba(255,23,68,0.5);}}
+.emergency-btn:hover{background:rgba(255,23,68,0.25);color:#fff;}
+.main{display:flex;flex:1;overflow:hidden;position:relative;z-index:1;}
+.sidebar{width:270px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.sidebar-header{padding:14px 16px 10px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--card) 0%,var(--panel) 100%);}
+.sidebar-header span{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--f2);letter-spacing:3px;text-transform:uppercase;}
+.sidebar-scroll{flex:1;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+.sidebar-scroll::-webkit-scrollbar{width:3px;}
+.sidebar-scroll::-webkit-scrollbar-thumb{background:var(--border2);}
+.section-label{padding:10px 16px 6px;font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
+.qbtn{display:flex;align-items:flex-start;gap:10px;width:100%;background:transparent;border:none;border-left:3px solid transparent;color:var(--text2);padding:8px 14px;text-align:left;font-family:'Exo 2',sans-serif;font-size:0.8rem;cursor:pointer;transition:all 0.2s;line-height:1.3;}
+.qbtn:hover{background:rgba(255,69,0,0.08);border-left-color:var(--f1);color:var(--f3);}
+.qbtn .icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+.qbtn .txt{display:flex;flex-direction:column;gap:2px;}
+.qbtn .txt small{font-size:0.62rem;color:var(--muted);display:block;}
+.emerg-box{margin:8px 12px;background:linear-gradient(135deg,rgba(255,23,68,0.1),rgba(255,69,0,0.08));border:1px solid rgba(255,23,68,0.25);border-radius:8px;padding:12px 14px;text-align:center;}
+.emerg-box .enum{font-family:'Orbitron',sans-serif;font-size:2rem;font-weight:900;color:var(--red);letter-spacing:4px;text-shadow:0 0 20px rgba(255,23,68,0.5);}
+.emerg-box .etxt{font-size:0.65rem;color:var(--muted);letter-spacing:2px;font-family:'Share Tech Mono',monospace;margin-top:2px;}
+.stat-card{margin:8px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;}
+.stat-row2{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.75rem;}
+.stat-row2:last-child{border-bottom:none;}
+.stat-row2 .slabel{color:var(--muted);font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:1px;}
+.sval.fire{color:var(--f3);}.sval.green{color:var(--green);}.sval.blue{color:var(--blue);}.sval.teal{color:var(--teal);}
+.chat-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topic-bar{flex-shrink:0;padding:8px 20px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;}
+.topic-bar::-webkit-scrollbar{display:none;}
+.topic-chip{flex-shrink:0;background:var(--card);border:1px solid var(--border);color:var(--text2);padding:5px 12px;border-radius:20px;font-size:0.72rem;cursor:pointer;white-space:nowrap;font-family:'Exo 2',sans-serif;transition:all 0.2s;}
+.topic-chip:hover{background:rgba(255,69,0,0.12);border-color:var(--f1);color:var(--f3);}
+.messages{flex:1;overflow-y:auto;padding:24px 28px;display:flex;flex-direction:column;gap:20px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+.messages::-webkit-scrollbar{width:4px;}
+.messages::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.msg{display:flex;gap:14px;animation:msg-in 0.35s cubic-bezier(0.16,1,0.3,1);}
+@keyframes msg-in{from{opacity:0;transform:translateY(16px) scale(0.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+.msg.user{flex-direction:row-reverse;}
+.av{width:40px;height:40px;flex-shrink:0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;position:relative;}
+.av.bot-av{background:linear-gradient(135deg,var(--f1),var(--ember));box-shadow:0 0 16px rgba(255,69,0,0.4);}
+.av.bot-av::after{content:'';position:absolute;inset:-3px;border-radius:13px;border:1px solid rgba(255,69,0,0.3);animation:av-ring 2s linear infinite;}
+@keyframes av-ring{0%{opacity:0.3}50%{opacity:1}100%{opacity:0.3}}
+.av.user-av{background:var(--card2);border:1px solid var(--border2);}
+.msg-content{display:flex;flex-direction:column;gap:4px;max-width:72%;}
+.msg.user .msg-content{align-items:flex-end;}
+.msg-meta{display:flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--muted);}
+.msg.user .msg-meta{flex-direction:row-reverse;}
+.sender-name{color:var(--f2);letter-spacing:1px;}
+.bubble{padding:14px 18px;border-radius:12px;font-size:0.9rem;line-height:1.75;position:relative;}
+.msg.bot .bubble{background:var(--card);border:1px solid var(--border);border-top-left-radius:4px;box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+.msg.bot .bubble::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--f1),var(--f2),transparent);border-radius:12px 12px 0 0;}
+.msg.user .bubble{background:linear-gradient(135deg,rgba(255,69,0,0.12),rgba(255,109,0,0.08));border:1px solid rgba(255,69,0,0.25);border-top-right-radius:4px;}
+.tag-pill{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;border-radius:20px;font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:1px;margin-bottom:8px;font-weight:700;}
+.tag-pill.danger{background:rgba(255,23,68,0.12);border:1px solid rgba(255,23,68,0.35);color:#FF6B6B;}
+.tag-pill.safe{background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.3);color:var(--green);}
+.tag-pill.info{background:rgba(68,138,255,0.1);border:1px solid rgba(68,138,255,0.3);color:var(--blue);}
+.tag-pill.warn{background:rgba(255,215,64,0.1);border:1px solid rgba(255,215,64,0.3);color:var(--yellow);}
+.bubble strong{color:var(--f3);}.bubble em{color:var(--teal);font-style:normal;}
+.typing-row{display:none;gap:14px;align-items:center;}
+.typing-row.show{display:flex;}
+.typing-bubble{background:var(--card);border:1px solid var(--border);border-top-left-radius:4px;border-radius:12px;padding:14px 18px;display:flex;gap:5px;align-items:center;}
+.typing-bubble span{width:8px;height:8px;border-radius:50%;background:var(--f2);animation:tdot 1.4s ease-in-out infinite;}
+.typing-bubble span:nth-child(2){animation-delay:0.2s;}.typing-bubble span:nth-child(3){animation-delay:0.4s;}
+@keyframes tdot{0%,60%,100%{transform:translateY(0);opacity:0.5}30%{transform:translateY(-6px);opacity:1}}
+.input-section{flex-shrink:0;background:var(--bg2);border-top:1px solid var(--border);padding:14px 20px 16px;}
+.input-row{display:flex;gap:10px;align-items:flex-end;}
+.input-box{flex:1;position:relative;background:var(--card);border:1px solid var(--border2);border-radius:12px;transition:all 0.2s;overflow:hidden;}
+.input-box:focus-within{border-color:rgba(255,69,0,0.5);box-shadow:0 0 0 3px rgba(255,69,0,0.08);}
+textarea{width:100%;background:transparent;border:none;color:var(--text);font-family:'Exo 2',sans-serif;font-size:0.92rem;padding:12px 16px;resize:none;outline:none;min-height:48px;max-height:130px;line-height:1.6;}
+textarea::placeholder{color:var(--muted);}
+.btn-send{flex-shrink:0;width:52px;height:52px;background:linear-gradient(135deg,var(--f1),var(--ember));border:none;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 16px rgba(255,69,0,0.4);transition:all 0.2s;}
+.btn-send:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,69,0,0.55);}
+.btn-send:disabled{opacity:0.4;transform:none;}
+.input-hint{margin-top:6px;text-align:center;font-size:0.62rem;color:var(--muted);font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
+.input-hint a{color:rgba(255,69,0,0.6);text-decoration:none;}
+.welcome-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;}
+.wcard{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;cursor:pointer;transition:all 0.2s;font-size:0.8rem;color:var(--text2);display:flex;align-items:center;gap:8px;}
+.wcard:hover{background:rgba(255,69,0,0.1);border-color:rgba(255,69,0,0.3);color:var(--f3);}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
 </style>
 </head>
 <body>
+<div id="particles"></div>
 
-<header>MAMA SALAMA PRO – Elimu kwa Wajawazito</header>
+<header>
+  <div class="header-glow"></div>
+  <div class="header-left">
+    <div class="fire-logo">🔥</div>
+    <div class="brand">
+      <h1>SadeGPTFire</h1>
+      <p>Mfumo wa Akili Bandia · Zimamoto, Uokoaji &amp; Maafa</p>
+    </div>
+  </div>
+  <div class="header-stats">
+    <div class="hstat"><span class="num">700K+</span><span class="lbl">Maarifa</span></div>
+    <div class="hstat"><span class="num">100+</span><span class="lbl">Mada</span></div>
+    <div class="hstat"><span class="num">100%</span><span class="lbl">Kiswahili</span></div>
+    <div class="hstat"><span class="num" style="color:var(--green)">HAI</span><span class="lbl">Hali</span></div>
+  </div>
+  <div class="header-right">
+    <div class="status-pill"><div class="pulse-dot"></div>MTANDAONI</div>
+    <button class="emergency-btn" onclick="callEmergency()">🚨 DHARURA: 114</button>
+  </div>
+</header>
 
-<div class="container">
+<div class="main">
+  <div class="sidebar">
+    <div class="sidebar-header"><span>⚡ Menyu ya Haraka — Mada 100+</span></div>
+    <div class="sidebar-scroll">
+      <div style="padding:10px 12px;">
+        <div class="emerg-box">
+          <div class="enum">114</div>
+          <div class="etxt">ZIMAMOTO TANZANIA</div>
+        </div>
+        <div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+          <div style="background:rgba(255,23,68,0.08);border:1px solid rgba(255,23,68,0.2);border-radius:6px;padding:6px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:#FF8A80;">🚑 112<br><span style="font-size:0.55rem;color:var(--muted);">Ambulance</span></div>
+          <div style="background:rgba(68,138,255,0.08);border:1px solid rgba(68,138,255,0.2);border-radius:6px;padding:6px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--blue);">🚔 112<br><span style="font-size:0.55rem;color:var(--muted);">Polisi</span></div>
+        </div>
+      </div>
 
-<input type="text" id="search" placeholder="Tafuta somo...">
+      <div class="section-label">🔥 Moto &amp; Kuzima</div>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🔥</span><span class="txt">Kuzima Moto Nyumbani<small>Hatua za kwanza za haraka</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🧯</span><span class="txt">Kutumia Kizima Moto<small>Mwongozo wa PASS</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🍳</span><span class="txt">Moto wa Sufuria Jikoni<small>Hatua za dharura jikoni</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">⛽</span><span class="txt">Moto wa Mafuta ya Petroli<small>Jinsi ya kuzima salama</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🔵</span><span class="txt">Aina za Vizima Moto<small>Foam, CO2, Poda, Maji, Halon</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🏠</span><span class="txt">Moto wa Nyumba ya Ghorofa<small>Kukimbia kutoka ghorofani</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🌙</span><span class="txt">Moto Wakati wa Usiku<small>Unapolia usingizi</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🛢️</span><span class="txt">Moto wa Tanki la Mafuta<small>Hatari kubwa — jinsi ya kukimbia</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🔌</span><span class="txt">Moto wa Umeme Nyumbani<small>Waya, plug, swichi</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🛋️</span><span class="txt">Moto wa Samani (Fanicha)<small>Sofa, godoro, pazia</small></span></button>
 
-<div id="lessonList"></div>
+      <div class="section-label">🚨 Dharura &amp; Uokoaji</div>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">📞</span><span class="txt">Namba za Dharura Tanzania<small>Zimamoto, polisi, hospitali</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🏊</span><span class="txt">Uokoaji Majini<small>Mtu anazama — nifanye nini</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">⚡</span><span class="txt">Mshtuko wa Umeme<small>Jinsi ya kusaidia salama</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">❤️</span><span class="txt">CPR — Ufufuaji wa Moyo<small>Hatua kamili za CPR</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🩺</span><span class="txt">Huduma ya Kwanza Kuungua<small>Jinsi ya kusaidia maumivu ya moto</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🫁</span><span class="txt">Kupumua kwa Bandia<small>Rescue breathing hatua kwa hatua</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🩹</span><span class="txt">Damu Nyingi — Kusimamisha<small>Pressure, tourniquet, bandage</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🦴</span><span class="txt">Mfupa Uliovunjika<small>Msaada wa kwanza, splint</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">😮</span><span class="txt">Kitu Kimezama Kooni<small>Heimlich maneuver</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🤕</span><span class="txt">Majeraha ya Kichwa<small>Jeraha la ubongo, concussion</small></span></button>
 
-<div id="lessonContent" class="hidden"></div>
-
-<hr>
-
-<h3>QUIZ YA AFYA</h3>
-<div id="quizBox"></div>
-
-<hr>
-
-<h3>MUULIZE MTAALAMU (AI)</h3>
-<input type="text" id="aiQuestion" placeholder="Andika swali lako...">
-<button onclick="askAI()">Tuma Swali</button>
-<div id="aiAnswer" class="ai-box"></div>
-
-</div>
-
-<footer>© 2026 Mama Salama Pro</footer>
-
-<script>
-
-// ===== GENERATE 100,000+ WORD CONTENT =====
-const lessons = [];
-function generateLongContent(week){
-let text = "";
-for(let i=0;i<2500;i++){
-text += `Wiki ya ${week}: Ujauzito ni kipindi muhimu sana. Lishe bora, mapumziko, na kufuatilia kliniki ni muhimu. `;
-}
-return text;
-}
-for(let i=1;i<=40;i++){
-lessons.push({
-title:`Wiki ya ${i} ya Ujauzito`,
-content:generateLongContent(i)
-});
-}
-
-// ===== DISPLAY LESSONS =====
-const lessonList = document.getElementById("lessonList");
-const lessonContent = document.getElementById("lessonContent");
-
-function renderLessons(filter=""){
-lessonList.innerHTML="";
-lessons
-.filter(l=>l.title.toLowerCase().includes(filter.toLowerCase()))
-.forEach((lesson,index)=>{
-let div=document.createElement("div");
-div.className="lesson";
-div.innerText=lesson.title;
-div.onclick=()=>{
-lessonContent.classList.remove("hidden");
-lessonContent.innerHTML=`<h2>${lesson.title}</h2><p>${lesson.content}</p>
-<button onclick="lessonContent.classList.add('hidden')">Rudi</button>`;
-};
-lessonList.appendChild(div);
-});
-}
-
-renderLessons();
-
-document.getElementById("search").addEventListener("input",(e)=>{
-renderLessons(e.target.value);
-});
-
-// ===== QUIZ SYSTEM =====
-const quizData={
-question:"Dalili ya kawaida ya ujauzito ni ipi?",
-options:["Kichefuchefu","Maumivu ya sikio","Kukohoa"],
-answer:"Kichefuchefu"
-};
-
-const quizBox=document.getElementById("quizBox");
-quizBox.innerHTML=`<p>${quizData.question}</p>`;
-quizData.options.forEach(opt=>{
-let div=document.createElement("div");
-div.className="quiz-option";
-div.innerText=opt;
-div.onclick=()=>{
-if(opt===quizData.answer){
-alert("Hongera! Jibu sahihi.");
-}else{
-alert("Jaribu tena.");
-}
-};
-quizBox.appendChild(div);
-});
-
-// ===== SIMPLE AI PLACEHOLDER =====
-function askAI(){
-let question=document.getElementById("aiQuestion").value;
-let answer="Asante kwa swali lako. Tafadhali hakikisha unahudhuria kliniki mara kwa mara na kula lishe bora.";
-if(question.toLowerCase().includes("maumivu")){
-answer="Maumivu makali wakati wa ujauzito yanahitaji uone daktari mara moja.";
-}
-document.getElementById("aiAnswer").innerText=answer;
-}
-
-// ===== OFFLINE SAVE =====
-localStorage.setItem("mamaSalamaData",JSON.stringify(lessons));
-
-</script>
-
-</body>
-</html>
-</script>
-
-</body>
-</html>
+      <div class="section-label">⚠️ Hatari Maalum</div>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">💨</span><span class="txt">Moshi Mwingi Nyumbani<small>Hatari ya moshi na CO</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🔥</span><span class="txt">Moto wa Gesi (Cylinder)<small>Gesi inayovuja au kuwaka</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🌲</span><span class="txt">Moto wa Msitu<small>Kukimbia na kuzuia</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🚗</span><span class="txt">Ajali ya Gari Barabarani<small>Moto wa gari, uokoaji</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">⚗️</span><span class="txt">Kemikali Hatari<small>Chemical spill, gesi sumu</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🏗️</span><span class="txt">Jengo Linaporomoka<small>Uokoaji wa jengo</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">🏭</span><span class="txt">Moto wa Kiwanda<small>Usalama viwandani</small></span></button>
+      <button class="qbtn" onclick="qask(this)"><span class="icon">⛈️</span><span class="txt">Umeme wa Radi<small>Usalam

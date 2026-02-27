@@ -1,66 +1,167 @@
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import math
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAMUSI YA KIZIMAMOTO PRO</title>
 
-# Hyperparameters
-vocab_size = 5000
-d_model = 256
-n_heads = 8
-n_layers = 6
-block_size = 128
+<style>
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:#0f172a;
+    color:white;
+}
 
-# Positional Encoding
-class PositionalEncoding(nn.Module):
-    def __init__(self, d_model, max_len=block_size):
-        super().__init__()
-        pe = torch.zeros(max_len, d_model)
-        position = torch.arange(0, max_len).unsqueeze(1)
-        div_term = torch.exp(torch.arange(0, d_model, 2) * (-math.log(10000.0) / d_model))
-        pe[:, 0::2] = torch.sin(position * div_term)
-        pe[:, 1::2] = torch.cos(position * div_term)
-        self.pe = pe.unsqueeze(0)
+header{
+    background:linear-gradient(90deg,#b91c1c,#7f1d1d);
+    padding:20px;
+    text-align:center;
+    font-size:28px;
+    font-weight:bold;
+    letter-spacing:2px;
+}
 
-    def forward(self, x):
-        return x + self.pe[:, :x.size(1)].to(x.device)
+.search-box{
+    text-align:center;
+    margin:20px;
+}
 
-# Transformer Block
-class TransformerBlock(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.attn = nn.MultiheadAttention(d_model, n_heads, batch_first=True)
-        self.ln1 = nn.LayerNorm(d_model)
-        self.ff = nn.Sequential(
-            nn.Linear(d_model, 4 * d_model),
-            nn.ReLU(),
-            nn.Linear(4 * d_model, d_model)
-        )
-        self.ln2 = nn.LayerNorm(d_model)
+input{
+    width:80%;
+    padding:12px;
+    font-size:16px;
+    border-radius:8px;
+    border:none;
+}
 
-    def forward(self, x):
-        attn_output, _ = self.attn(x, x, x)
-        x = self.ln1(x + attn_output)
-        ff_output = self.ff(x)
-        x = self.ln2(x + ff_output)
-        return x
+.container{
+    padding:20px;
+    display:grid;
+    grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+}
 
-# GPT Model
-class MiniGPT(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.token_embedding = nn.Embedding(vocab_size, d_model)
-        self.position_encoding = PositionalEncoding(d_model)
-        self.blocks = nn.Sequential(*[TransformerBlock() for _ in range(n_layers)])
-        self.ln = nn.LayerNorm(d_model)
-        self.head = nn.Linear(d_model, vocab_size)
+.card{
+    background:#1e293b;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 0 10px rgba(0,0,0,0.6);
+    transition:0.3s;
+}
 
-    def forward(self, x):
-        x = self.token_embedding(x)
-        x = self.position_encoding(x)
-        x = self.blocks(x)
-        x = self.ln(x)
-        logits = self.head(x)
-        return logits
+.card:hover{
+    transform:scale(1.03);
+    background:#334155;
+}
 
-model = MiniGPT()
-print("Mini GPT model created successfully!")
+h2{
+    color:#f87171;
+}
+
+footer{
+    text-align:center;
+    padding:20px;
+    background:#111827;
+    margin-top:30px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+🔥 KAMUSI KUBWA YA MANENO YA KITAALAMU YA ZIMAMOTO 🔥
+</header>
+
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="Andika neno la kizimamoto kutafuta...">
+</div>
+
+<div class="container" id="wordContainer">
+
+<div class="card">
+<h2>Fire Tetrahedron</h2>
+<p>Nadharia inayoelezea kuwa moto unahitaji vitu vinne: Joto (Heat), Mafuta (Fuel), Oksijeni (Oxygen) na Mmenyuko wa Kikemikali (Chemical Chain Reaction). Kuondoa kipengele kimoja huzima moto.</p>
+</div>
+
+<div class="card">
+<h2>Flashover</h2>
+<p>Hatua ya ghafla ambapo gesi zote zinazowaka ndani ya chumba zinawaka kwa wakati mmoja kutokana na joto kali kufikia kiwango cha kuwaka.</p>
+</div>
+
+<div class="card">
+<h2>Backdraft</h2>
+<p>Mlipuko unaotokea pale oksijeni inapoingia ghafla katika eneo lenye moto uliokuwa umefungiwa bila hewa ya kutosha.</p>
+</div>
+
+<div class="card">
+<h2>SCBA (Self Contained Breathing Apparatus)</h2>
+<p>Kifaa cha kupumulia hewa safi kinachovaliwa na askari wa zimamoto wakati wa operesheni katika mazingira yenye moshi au gesi hatari.</p>
+</div>
+
+<div class="card">
+<h2>Fire Load</h2>
+<p>Kiasi cha vitu vinavyoweza kuwaka ndani ya eneo fulani ambacho kinaweza kuongeza ukubwa wa moto.</p>
+</div>
+
+<div class="card">
+<h2>Compartment Fire</h2>
+<p>Moto unaotokea ndani ya chumba kilichofungwa au jengo lenye mipaka maalumu ya kuta.</p>
+</div>
+
+<div class="card">
+<h2>Ventilation</h2>
+<p>Utaratibu wa kuingiza au kutoa hewa ili kupunguza joto, moshi na gesi hatari wakati wa uokoaji.</p>
+</div>
+
+<div class="card">
+<h2>Hydrant</h2>
+<p>Kifaa cha kudumu kinachounganishwa na mfumo wa maji kwa ajili ya kujaza maji kwenye gari la zimamoto.</p>
+</div>
+
+<div class="card">
+<h2>Fire Suppression System</h2>
+<p>Mfumo wa kiotomatiki wa kuzima moto kama sprinkler system au mfumo wa gesi ya CO₂.</p>
+</div>
+
+<div class="card">
+<h2>Incident Command System (ICS)</h2>
+<p>Mfumo wa uongozi unaotumika kusimamia matukio ya dharura kwa mpangilio wa kitaalamu na mgawanyo wa majukumu.</p>
+</div>
+
+<div class="card">
+<h2>Thermal Layering</h2>
+<p>Mgawanyiko wa joto ndani ya chumba ambapo hewa ya moto hukusanyika juu na baridi chini.</p>
+</div>
+
+<div class="card">
+<h2>Fire Behavior</h2>
+<p>Tabia ya moto kuenea, kubadilika na kuathiri mazingira kulingana na hewa, joto na aina ya mafuta yanayowaka.</p>
+</div>
+
+</div>
+
+<footer>
+© 2026 KAMUSI YA ZIMAMOTO PRO | Mfumo wa Mafunzo na Marejeo ya Kitaalamu
+</footer>
+
+<script>
+const searchInput = document.getElementById("searchInput");
+const cards = document.querySelectorAll(".card");
+
+searchInput.addEventListener("keyup", function(){
+    let filter = searchInput.value.toLowerCase();
+    cards.forEach(card => {
+        let text = card.innerText.toLowerCase();
+        if(text.includes(filter)){
+            card.style.display="block";
+        } else {
+            card.style.display="none";
+        }
+    });
+});
+</script>
+
+</body>
+    </html>

@@ -492,7 +492,7 @@ Kanuni zako muhimu:
                     'Authorization': `Bearer ${API_KEY}`
                 },
                 body: JSON.stringify({
-                    model: 'llama3-70b-8192',
+                    model: 'llama-3.3-70b-versatile',
                     messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
                     temperature: 0.8
                 })
@@ -502,7 +502,7 @@ Kanuni zako muhimu:
             document.getElementById('typing')?.remove();
 
             if (data.error) {
-                addMessage('ai', `✅ Fanya malipo kwanza: ${data.error.message}`);
+                addMessage('ai', `❌ Hitilafu: ${data.error.message}`);
             } else {
                 const reply = data.choices[0].message.content;
                 messages.push({ role: 'assistant', content: reply });
@@ -510,7 +510,7 @@ Kanuni zako muhimu:
             }
         } catch (err) {
             document.getElementById('typing')?.remove();
-            addMessage('ai', '♻️ Samahani wasiliana na HERMAN SADE mtaalanu wa ai hii kupata code ya kutumia SadeGPT. Tafadhali jaribu tena.');
+            addMessage('ai', '❌ Samahani, kuna tatizo la mtandao. Tafadhali jaribu tena.');
         }
 
         btn.disabled = false;

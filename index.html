@@ -324,10 +324,10 @@
 
 <div id="api-setup">
     <div class="setup-card">
-        <h2>🔑 Weka API Key</h2>
-        <p>Weka OpenAI API Key yako ili kuanza kutumia <strong>SadeGPT</strong>. Key haitahifadhiwa mahali popote - inabaki kwenye browser yako tu.</p>
+        <h2>🔑 Weka Groq API Key</h2>
+        <p>Weka Groq API Key yako <strong>(BURE)</strong> ili kuanza kutumia <strong>SadeGPT</strong>. Pata key bure kwenye <strong>console.groq.com</strong></p>
         <div class="input-group">
-            <input type="password" id="api-key-input" placeholder="sk-proj-..." />
+            <input type="password" id="api-key-input" placeholder="gsk_..." />
         </div>
         <button class="btn-primary" onclick="saveApiKey()">Anza Kutumia SadeGPT →</button>
     </div>
@@ -385,7 +385,7 @@
 
 Kanuni zako muhimu:
 - Jibu KILA WAKATI kwa Kiswahili tu
-- Jina lako ni SadeGPT pekee - usiseme kamwe kwamba wewe ni ChatGPT au OpenAI
+- Jina lako ni SadeGPT pekee - usiseme kamwe kwamba wewe ni ChatGPT, OpenAI, Groq, au Llama
 - Kuwa na urafiki, msaada, na ukweli daima
 - Jibu kwa undani lakini kwa uwazi na lugha rahisi
 - Ikiwa hujui jibu, sema ukweli badala ya kukisia
@@ -401,7 +401,7 @@ Kanuni zako muhimu:
 
     function saveApiKey() {
         const key = document.getElementById('api-key-input').value.trim();
-        if (!key.startsWith('sk-')) { alert('API Key si sahihi. Inapaswa kuanza na "sk-"'); return; }
+        if (!key.startsWith('gsk_')) { alert('API Key si sahihi. Inapaswa kuanza na "gsk_"'); return; }
         API_KEY = key;
         sessionStorage.setItem('sade_key', key);
         document.getElementById('api-setup').style.display = 'none';
@@ -485,14 +485,14 @@ Kanuni zako muhimu:
         addTyping();
 
         try {
-            const res = await fetch('https://api.openai.com/v1/chat/completions', {
+            const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${API_KEY}`
                 },
                 body: JSON.stringify({
-                    model: 'gpt-3.5-turbo',
+                    model: 'llama3-70b-8192',
                     messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
                     temperature: 0.8
                 })
@@ -502,7 +502,7 @@ Kanuni zako muhimu:
             document.getElementById('typing')?.remove();
 
             if (data.error) {
-                addMessage('ai', `❌ Hitilafu: ${data.error.message}`);
+                addMessage('ai', `✅ Fanya malipo kwanza: ${data.error.message}`);
             } else {
                 const reply = data.choices[0].message.content;
                 messages.push({ role: 'assistant', content: reply });
@@ -510,7 +510,7 @@ Kanuni zako muhimu:
             }
         } catch (err) {
             document.getElementById('typing')?.remove();
-            addMessage('ai', '❌ Samahani, kuna tatizo la mtandao. Tafadhali jaribu tena.');
+            addMessage('ai', '♻️ Samahani wasiliana na HERMAN SADE mtaalanu wa ai hii kupata code ya kutumia SadeGPT. Tafadhali jaribu tena.');
         }
 
         btn.disabled = false;
@@ -518,5 +518,4 @@ Kanuni zako muhimu:
     }
 </script>
 </body>
-  </html>
-  
+</html>

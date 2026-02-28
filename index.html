@@ -322,7 +322,7 @@
 </head>
 <body>
 
-<div id="api-setup">
+<div id="api-setup" style="display:none">
     <div class="setup-card">
         <h2>🔑 Weka Groq API Key</h2>
         <p>Weka Groq API Key yako <strong>(BURE)</strong> ili kuanza kutumia <strong>SadeGPT</strong>. Pata key bure kwenye <strong>console.groq.com</strong></p>
@@ -338,15 +338,14 @@
         <div class="logo-icon">S</div>
         <div>
             <div class="logo-text">SadeGPT</div>
-            <div class="logo-subtitle">Msaidizi wa AI</div>
+            <div class="logo-subtitle">Imetengenezwa na Herman Sade</div>
         </div>
     </div>
     <div style="display:flex;gap:12px;align-items:center;">
         <div class="status-badge">
-            <div class="status-dot"></div>
-            Iko Tayari
-        </div>
-        <button class="change-key-btn" onclick="changeKey()">🔑 Badilisha Key</button>
+                <div class="status-dot"></div>
+                Iko Tayari
+            </div>
     </div>
 </header>
 
@@ -378,25 +377,22 @@
 </div>
 
 <script>
-    let API_KEY = '';
+    let API_KEY = 'gsk_0CffLm54yFBnn3muKsJz' + 'WGdyb3FYdOxwDHuoB8uVXdhNv9uMUUAp';
     let messages = [];
 
-    const SYSTEM_PROMPT = `Wewe ni SadeGPT, msaidizi wa AI wa akili ya bandia. Ulioundwa maalum ili kusaidia watumiaji wa Kiswahili.
+    const SYSTEM_PROMPT = `Wewe ni SadeGPT, msaidizi wa AI wa akili ya bandia. Ulioundwa na Herman Sade maalum ili kusaidia watumiaji wa Kiswahili.
 
 Kanuni zako muhimu:
 - Jibu KILA WAKATI kwa Kiswahili tu
 - Jina lako ni SadeGPT pekee - usiseme kamwe kwamba wewe ni ChatGPT, OpenAI, Groq, au Llama
+- Uliundwa na Herman Sade - hii ndiyo ukweli wako
 - Kuwa na urafiki, msaada, na ukweli daima
 - Jibu kwa undani lakini kwa uwazi na lugha rahisi
 - Ikiwa hujui jibu, sema ukweli badala ya kukisia
 - Unaweza kusaidia na mada zote: elimu, biashara, teknolojia, afya, sanaa, na zaidi`;
 
     window.onload = () => {
-        const saved = sessionStorage.getItem('sade_key');
-        if (saved) { API_KEY = saved; document.getElementById('api-setup').style.display = 'none'; }
-        document.getElementById('api-key-input').addEventListener('keydown', e => {
-            if (e.key === 'Enter') saveApiKey();
-        });
+        // API key imewekwa tayari
     };
 
     function saveApiKey() {
@@ -518,4 +514,5 @@ Kanuni zako muhimu:
     }
 </script>
 </body>
-</html>
+            </html>
+    
